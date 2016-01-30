@@ -1,0 +1,2 @@
+<span ng-hide="editing" ng-click="changeTarget()" class="target-box">{{ line.targetCount ? line.targetCount: '&infin;' }}</span>
+<input ng-show="editing" type="number" ng-model="line.targetCount" ng-blur="saveTarget()" class="target-box" />

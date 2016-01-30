@@ -1,0 +1,92 @@
+<html>
+<head>
+<link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css"/ >
+<script type="text/javascript" src="libs/jquery.js"></script>
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="libs/angular.min.js"></script>
+<script type="text/javascript" src="master.js"></script>
+<title>Haiku</title>
+<style type="text/css">
+    .target-box {
+        width: 45px;
+    }
+
+    .line-green {
+        background-image:url('img/line_green.jpg');
+        background-repeat: no-repeat;
+    }
+
+    .line-green--0 {
+        background-size: 0% 100%;
+    }
+
+    .line-green--10 {
+        background-size: 10% 100%;
+    }
+
+    .line-green--20 {
+        background-size: 20% 100%;
+    }
+
+    .line-green--30 {
+        background-size: 30% 100%;
+    }
+
+    .line-green--40 {
+        background-size: 40% 100%;
+    }
+
+    .line-green--50 {
+        background-size: 50% 100%;
+    }
+
+    .line-green--60 {
+        background-size: 60% 100%;
+    }
+
+    .line-green--70 {
+        background-size: 70% 100%;
+    }
+
+    .line-green--80 {
+        background-size: 80% 100%;
+    }
+
+    .line-green--90 {
+        background-size: 90% 100%;
+    }
+
+    .line-green--100 {
+        background-size: 100% 100%;
+    }
+
+
+</style>
+</head>
+<body ng-app="haiku">
+
+<div ng-controller="Ctrl">
+
+<form class="form">
+<!--<div class="form-group">
+<button type="button" class="btn" ng-click="newLine(true);">New line</button>
+</div> -->
+  <div ng-repeat="l in lines" class="form-group {{l.status()}}">
+    <div class="input-group">
+      <div class="input-group-addon">
+      <line-target line="l" />
+      </div>
+      <input type="text" class="form-control line-green line-green--{{l.percent()}}" ng-model="l.raw" ng-blur="onLineChange(l)">
+      <div class="input-group-addon" ng-bind="l.runningCount"></div>
+    </div>
+  </div>
+
+<div class="form-group">
+  <button type="submit" class="btn btn-primary" ng-click="download()">Save</button>
+  </div>
+</form>
+
+</div>
+
+</body>
+</html>
