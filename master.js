@@ -34,6 +34,7 @@ function Line(targetCount){
     this.targetCount = 0;
     this.leeway = 0;
     this.runningCount = 0;
+    this.dummy = false;
     this.raw = '';
     if(targetCount){
         this.targetCount = targetCount;
@@ -84,6 +85,15 @@ app.controller('Ctrl', ['$scope', function($scope){
         line.runningCount = countSyllables(line.raw);
 
         $scope.newLine(true);
+    };
+
+    $scope.newStanza = function(){
+        var newLine = new Line();
+        newLine.dummy = true;
+        $scope.lines.push(newLine);
+        $scope.lines.push(new Line());
+
+        console.log($scope.lines);
     };
 
     $scope.download = function() {
