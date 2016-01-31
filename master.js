@@ -9,27 +9,6 @@ var Wordnik = {
     }
 };
 
-function getSyllables(word){
-    word = word.replace(/\W/g, '');
-    if(!word){
-        return 0;
-    }
-    var path = "word.json/"+word+"/hyphenation";
-    var count = 0;
-
-    Wordnik.get(path).done(function(data){
-        count = data.length;
-    });
-
-    return count;
-}
-
-function countSyllables(line){
-    var words = line.split(/\s|\-/);
-    var counts = words.map(getSyllables);
-    return counts.reduce(function(a, b){ return a+b; }, 0);
-}
-
 function Line(targetCount){
     this.targetCount = 0;
     this.leeway = 0;
@@ -65,6 +44,35 @@ var app = angular.module('haiku', []);
 app.controller('Ctrl', ['$scope', function($scope){
 
     $scope.lines = [new Line()];
+    $scope.splitSource = 'algo';
+
+    function getSyllables(word){
+        word = word.replace(/\W/g, '');
+        if(!word){
+            return 0;
+        }
+
+        if ($scope.splitSource === 'api'){
+            console.log('using dict api');
+            var path = "word.json/"+word+"/hyphenation";
+            var count = 0;
+
+            Wordnik.get(path).done(function(data){
+                count = data.length;
+            });
+
+            return count;
+        } else {
+            console.log('using algo');
+            return hypCountSyllables(word);
+        }
+    }
+
+    function countSyllables(line){
+        var words = line.split(/\s|\-/);
+        var counts = words.map(getSyllables);
+        return counts.reduce(function(a, b){ return a+b; }, 0);
+    }
 
     $scope.newLine = function(copyLast){
 
