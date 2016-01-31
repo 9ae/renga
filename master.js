@@ -10,6 +10,7 @@ var Wordnik = {
 };
 
 function getSyllables(word){
+    word = word.replace(/\W/g, '');
     if(!word){
         return 0;
     }
@@ -25,7 +26,6 @@ function getSyllables(word){
 
 function countSyllables(line){
     var words = line.split(/\s|\-/);
-    //TODO: strip . , ;
     var counts = words.map(getSyllables);
     return counts.reduce(function(a, b){ return a+b; }, 0);
 }
