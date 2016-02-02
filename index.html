@@ -102,7 +102,7 @@
       <line-target line="l" />
       </div>
       <input type="text" class="form-control line-green line-green--{{l.percent()}}" ng-model="l.raw" ng-blur="onLineChange(l)">
-      <div class="input-group-addon" ng-bind="l.runningCount"></div>
+      <div class="input-group-addon" ng-bind="l.runningCount" ng-click="deleteLine($index)"></div>
     </div>
     <p ng-if="l.dummy">&nbsp;</p>
   </div>

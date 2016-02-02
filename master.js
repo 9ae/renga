@@ -95,6 +95,11 @@ app.controller('Ctrl', ['$scope', function($scope){
         $scope.newLine(true);
     };
 
+    $scope.deleteLine = function(index){
+        $scope.lines.splice(index, 1);
+        //$scope.$apply();
+    }
+
     $scope.newStanza = function(){
         var newLine = new Line();
         newLine.dummy = true;
