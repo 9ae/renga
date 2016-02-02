@@ -73,6 +73,14 @@
         background-color:rgba(250, 250, 250, 0.5);
     }
 
+    .field-right:hover {
+        background-color: #ff0000;
+    }
+
+    .field-right:hover::before {
+        content: "X";
+    }
+
 </style>
 </head>
 <body ng-app="haiku">
@@ -102,7 +110,7 @@
       <line-target line="l" />
       </div>
       <input type="text" class="form-control line-green line-green--{{l.percent()}}" ng-model="l.raw" ng-blur="onLineChange(l)">
-      <div class="input-group-addon" ng-bind="l.runningCount" ng-click="deleteLine($index)"></div>
+      <div class="input-group-addon field-right" ng-bind="l.runningCount" ng-click="deleteLine($index)"></div>
     </div>
     <p ng-if="l.dummy">&nbsp;</p>
   </div>
