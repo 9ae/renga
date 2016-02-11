@@ -84,12 +84,22 @@
 </style>
 </head>
 <body ng-app="haiku">
-<div class="panel panel-default master">
-<div ng-controller="Ctrl" class="panel-body">
 
-<form class="form">
+<div ng-controller="Ctrl" class="container">
 
-  <div class="form-group">
+<form class="form row">
+<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+<div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      File
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a href="#" data-toggle="modal" data-target="#importModal">Import</a></li>
+      <li><a href="#" ng-click="download()">Export</a></li>
+    </ul>
+  </div>
+
 <div class="radio">
   <label>
     <input type="radio" name="splitter" value="api" ng-model="splitSource">
@@ -102,34 +112,57 @@
     Algorithm
   </label>
 </div>
+
+<div class="checkbox">
+    <label>
+      <input type="checkbox" ng-model="keepCountsOnSave"> Keep syllable counts
+    </label>
   </div>
 
+<button type="button" class="btn btn-primary" ng-click="newStanza();">New Stanza</button>
+  </div>
+
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-10 panel panel-default master">
+
+<div class="panel-body">
   <div ng-repeat="l in lines" class="form-group {{l.status()}}">
     <div class="input-group" ng-if="!l.dummy">
       <div class="input-group-addon">
-      <line-target line="l" />
+      <line-target line="l"></line-target>
       </div>
       <input type="text" class="form-control line-green line-green--{{l.percent()}}" ng-model="l.raw" ng-blur="onLineChange(l)">
       <div class="input-group-addon field-right" ng-bind="l.runningCount" ng-click="deleteLine($index)"></div>
     </div>
     <p ng-if="l.dummy">&nbsp;</p>
   </div>
-
-<div class="form-group">
-<button type="button" class="btn" ng-click="newStanza();">New Stanza</button>
+  </div>
 </div>
-<div class="form-group">
-<div class="checkbox">
-    <label>
-      <input type="checkbox" ng-model="keepCountsOnSave"> Keep syllable counts
-    </label>
-  </div>
-<button type="submit" class="btn btn-primary" ng-click="download()">Download</button>
-  </div>
 </form>
 
+<!-- Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Import song</h4>
+      </div>
+      <div class="modal-body">
+      <div class="form-group">
+      <label>Select .txt file</label>
+        <input type="file" accept="text/plain" id="importFileField">
+        <div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="import()">Import</button>
+      </div>
+    </div>
+  </div>
 </div>
+
 </div>
+
 
 </body>
 </html>

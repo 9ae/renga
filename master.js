@@ -46,6 +46,7 @@ app.controller('Ctrl', ['$scope', function($scope){
     $scope.lines = [new Line()];
     $scope.splitSource = 'algo';
     $scope.keepCountsOnSave = false;
+    $scope.overwriteOnImport = true;
 
     function getSyllables(word){
         word = word.replace(/\W/g, '');
@@ -73,6 +74,31 @@ app.controller('Ctrl', ['$scope', function($scope){
         var words = line.split(/\s|\-/);
         var counts = words.map(getSyllables);
         return counts.reduce(function(a, b){ return a+b; }, 0);
+    }
+
+    function parseImport(input){
+        var lines = input.split('\n');
+        if ($scope.overwriteOnImport){
+            $scope.lines = [];
+        }
+
+        for(var i=0; i<lines.length; i++){
+            var ln = lines[i];
+            var newLine = new Line(false);
+            var hasSyllablesPattern = /\[(\d+)\]\s(.*)/g;
+            var matches = hasSyllablesPattern.exec(ln);
+
+            if (matches!==null){
+                console.log(matches[2]);
+                newLine.raw = matches[2];
+                newLine.runningCount = parseInt(matches[1]);
+            } else {
+                newLine.raw = ln;
+                newLine.runningCount = countSyllables(ln);
+            }
+            $scope.lines.push(newLine);
+        }
+        $scope.$apply();
     }
 
     $scope.newLine = function(copyLast){
@@ -114,7 +140,7 @@ app.controller('Ctrl', ['$scope', function($scope){
     $scope.download = function() {
         var rawLines = $scope.lines.map(function(e){ 
 
-            if($scope.keepCountsOnSave){
+            if($scope.keepCountsOnSave && !e.dummy){
                 return '['+e.runningCount+'] '+e.raw;
             } else {
                 return e.raw;
@@ -133,6 +159,17 @@ app.controller('Ctrl', ['$scope', function($scope){
       element.click();
 
       document.body.removeChild(element);
+    }
+
+    $scope.import = function() {
+        //TODO: prompt user if there are exisiting lines it will overwrite or append
+
+        var input = document.getElementById('importFileField');
+        var reader = new FileReader();
+        reader.onload = function(){
+          parseImport(reader.result);
+        };
+        reader.readAsText(input.files[0]);
     }
 
 
