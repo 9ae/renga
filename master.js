@@ -45,6 +45,7 @@ app.controller('Ctrl', ['$scope', function($scope){
 
     $scope.lines = [new Line()];
     $scope.splitSource = 'algo';
+    $scope.keepCountsOnSave = false;
 
     function getSyllables(word){
         word = word.replace(/\W/g, '');
@@ -111,7 +112,15 @@ app.controller('Ctrl', ['$scope', function($scope){
     };
 
     $scope.download = function() {
-        var rawLines = $scope.lines.map(function(e){ return e.raw; });
+        var rawLines = $scope.lines.map(function(e){ 
+
+            if($scope.keepCountsOnSave){
+                return '['+e.runningCount+'] '+e.raw;
+            } else {
+                return e.raw;
+            }
+            
+        });
         var text = rawLines.join('\n');
 
       var element = document.createElement('a');
